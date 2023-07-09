@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <stdio.h>
 
 #define UNUSED(x) (void)(x)
 

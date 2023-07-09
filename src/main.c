@@ -11,7 +11,7 @@ int main(int argc, char*argv[])
     if(initialize_SDL(&window, &renderer) != 0)
         return 1;
 
-    exit_loop();
+    game_loop(renderer);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

@@ -27,15 +27,28 @@ int initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
     return 0;
 }
 
-
-int exit_loop()
+void game_loop(SDL_Renderer* renderer)
 {
-    SDL_Event event;
-    while(SDL_TRUE)
+	SDL_Texture* text = load_card(renderer, "cards/edgy_1.bmp");
+
+	SDL_Rect card;
+
+	SDL_QueryTexture(text, NULL, NULL, &card.w, &card.h);
+
+	card.x = SCREEN_WIDTH / 2 - card.w / 2;
+	card.y = SCREEN_HEIGHT / 2 - card.h / 2;
+
+	SDL_RenderCopyEx(renderer, text, NULL, &card, 0, NULL, SDL_FLIP_NONE);
+
+	SDL_RenderPresent(renderer);
+
+	SDL_bool quit = SDL_FALSE;
+	SDL_Event event;
+
+	while(quit == SDL_FALSE)
 	{
-        if(SDL_PollEvent(&event))
+		if(SDL_WaitEvent(&event))
             if(event.type == SDL_QUIT)
-                break;
+                quit = SDL_TRUE;
 	}
-	return 0;
 }
