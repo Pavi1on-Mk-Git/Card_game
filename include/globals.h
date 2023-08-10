@@ -1,3 +1,6 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
@@ -5,3 +8,9 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+#define FPS 80
+#define MAX_NAME_LEN 32
+
+#define FRAME_TIME 1000.0 / FPS
+
+#endif
