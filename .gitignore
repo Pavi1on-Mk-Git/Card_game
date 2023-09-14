@@ -1,3 +1,4 @@
 build/
 .depend
 card_game.exe
+.vscode/
