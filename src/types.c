@@ -21,3 +21,19 @@ void add(card** head, card_entry** new_card)
 
     curr->next = new_entry;
 }
+
+void free_cards(card** head)
+{
+    card* curr = *head;
+    card* next = curr->next;
+
+    while(next != NULL)
+    {
+        SDL_DestroyTexture(curr->data->texture);
+        free(curr->data);
+        free(curr);
+
+        curr = next;
+        next = curr->next;
+    }
+}

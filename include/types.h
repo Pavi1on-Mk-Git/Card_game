@@ -16,5 +16,6 @@ typedef struct card
 } card;
 
 void add(card** head, card_entry** new_card);
+void free_cards(card** head);
 
 #endif

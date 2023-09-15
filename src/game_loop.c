@@ -33,15 +33,15 @@ void game_loop(SDL_Renderer* renderer)
 	SDL_Event event;
 	Uint64 frame_start, frame_time;
 
-	card* textures = {0};
+	card* cards = {0};
 	
-	if(load_cards(&textures, renderer) != ERR_OK)
+	if(load_cards(&cards, renderer) != ERR_OK)
 	{
 		puts(error_msg);
 		return;
 	}
 
-	card* curr_text = textures;
+	card* curr_text = cards;
 
 	while(quit == SDL_FALSE)
 	{
@@ -73,4 +73,6 @@ void game_loop(SDL_Renderer* renderer)
         	SDL_Delay(FRAME_TIME - frame_time);
     	}
 	}
+
+	free_cards(&cards);
 }
