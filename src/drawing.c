@@ -1,6 +1,6 @@
 #include "drawing.h"
 
-ErrorCode load_card(SDL_Texture** texture, SDL_Renderer* renderer, const char* path)
+ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char* path)
 {
     SDL_Surface* surface = SDL_LoadBMP(path);
 
@@ -20,15 +20,15 @@ ErrorCode load_card(SDL_Texture** texture, SDL_Renderer* renderer, const char* p
     return ERR_OK;
 }
 
-ErrorCode load_cards(card** head, SDL_Renderer* renderer)
+ErrorCode load_card_data(card** head, SDL_Renderer* renderer)
 {
-    FILE* card_data = fopen("cards/card_data.bruh", "r");
+    FILE* card_data = fopen("assets/cards/card_data.bruh", "r");
     card_entry* curr_card;
     int next_char;
 
     do
     {
-        if(parse_card(&curr_card, card_data, renderer) != ERR_OK)
+        if(parse_card_data(&curr_card, card_data, renderer) != ERR_OK)
         {
             strcpy(error_msg, "Card data file format error");
             return ERR_FILE_FORMAT;
