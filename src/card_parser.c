@@ -1,14 +1,19 @@
-#include <ctype.h>
-
 #include "card_parser.h"
+
 #include "helpers.h"
 
-ErrorCode read_field(FILE card_data[static 1], const char* field_name, char* buffer, const char* buffer_start, const char* buffer_end)
+#include <ctype.h>
+
+
+ErrorCode read_field(
+    FILE card_data[static 1], const char* field_name, char* buffer, const char* buffer_start, const char* buffer_end
+)
 {
     int c;
     size_t offset = 0;
 
-    while(isspace(c = getc(card_data))){}
+    while(isspace(c = getc(card_data)))
+    {}
 
     ungetc(c, card_data);
 

@@ -3,7 +3,8 @@
 
 #include "globals.h"
 
-typedef enum ErrorCode {
+typedef enum ErrorCode
+{
     ERR_OK,
     ERR_INIT,
     ERR_FILE_FORMAT,

@@ -1,5 +1,7 @@
 #include "types.h"
+
 #include "globals.h"
+
 
 void add(card** head, card_entry** new_card)
 {

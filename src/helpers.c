@@ -9,7 +9,7 @@ ErrorCode read_until(FILE* file, char* buffer, char end_char, int offset)
 
     int chars_read = offset;
 
-    while((curr_char = fgetc(file)) != (int)end_char)
+    while((curr_char = fgetc(file)) != (int) end_char)
     {
         if(chars_read >= MAX_NAME_LEN)
             return ERR_MAX_LEN;
