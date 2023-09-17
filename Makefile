@@ -4,7 +4,16 @@ LIB_DIR = lib
 SRC_DIR	= src
 BUILD_DIR = build
 
-CFLAGS = -g -Wall -Werror -Wextra -Wpedantic -I$(INC_DIR) -L$(LIB_DIR)
+DEBUG ?= 1
+
+ifeq ($(DEBUG), 1)
+	OCFLAGS = -g
+
+else
+	OCFLAGS = -Ofast -mwindows
+endif
+
+CFLAGS = -Wall -Werror -Wextra -Wpedantic -I$(INC_DIR) -L$(LIB_DIR) $(OCFLAGS)
 LDFLAGS = -lmingw32 -lSDL2main -lSDL2
 
 SRC = $(wildcard $(SRC_DIR)/*.c)
