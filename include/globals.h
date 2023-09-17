@@ -3,13 +3,55 @@
 
 #include <SDL2/SDL.h>
 
-#define UNUSED(x) (void)(x)
+#define UNUSED(x) (void) (x)
 
 #define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#define BASE_SCREEN_HEIGHT 720
+#define BAR_HEIGHT 34
+#define BUTTON_BORDER 3
+#define SCREEN_HEIGHT (BASE_SCREEN_HEIGHT + BAR_HEIGHT)
 #define FPS 120
 #define MAX_NAME_LEN 64
 
 #define FRAME_TIME 1000.0 / FPS
+
+#define BAR_VIEWPORT                                       \
+    (SDL_Rect)                                             \
+    {                                                      \
+        .x = 0, .y = 0, .w = SCREEN_WIDTH, .h = BAR_HEIGHT \
+    }
+#define GAME_VIEWPORT                                                       \
+    (SDL_Rect)                                                              \
+    {                                                                       \
+        .x = 0, .y = BAR_HEIGHT, .w = SCREEN_WIDTH, .h = BASE_SCREEN_HEIGHT \
+    }
+#define EXIT_BUTTON                                                                        \
+    (SDL_Rect)                                                                             \
+    {                                                                                      \
+        .x = SCREEN_WIDTH - (3 * BAR_HEIGHT) / 2 + BUTTON_BORDER, .y = BUTTON_BORDER,      \
+        .w = (3 * BAR_HEIGHT) / 2 - 2 * BUTTON_BORDER, .h = BAR_HEIGHT - 2 * BUTTON_BORDER \
+    }
+#define FULLSCREEN_BUTTON                                                                  \
+    (SDL_Rect)                                                                             \
+    {                                                                                      \
+        .x = SCREEN_WIDTH - (3 * BAR_HEIGHT) + BUTTON_BORDER, .y = BUTTON_BORDER,          \
+        .w = (3 * BAR_HEIGHT) / 2 - 2 * BUTTON_BORDER, .h = BAR_HEIGHT - 2 * BUTTON_BORDER \
+    }
+#define MIN_BUTTON                                                                         \
+    (SDL_Rect)                                                                             \
+    {                                                                                      \
+        .x = SCREEN_WIDTH - (9 * BAR_HEIGHT) / 2 + BUTTON_BORDER, .y = BUTTON_BORDER,      \
+        .w = (3 * BAR_HEIGHT) / 2 - 2 * BUTTON_BORDER, .h = BAR_HEIGHT - 2 * BUTTON_BORDER \
+    }
+
+typedef struct WindowState
+{
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    SDL_bool quit : 1, dragging : 1, want_exit : 1, want_fullscreen : 1, want_min : 1, is_fullscreen : 1;
+    SDL_Point mouse_offset;
+    SDL_Event event;
+    Uint64 frame_start, frame_time;
+} WindowState;
 
 #endif

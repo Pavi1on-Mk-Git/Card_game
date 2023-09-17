@@ -1,20 +1,19 @@
 #include "game_loop.h"
 
-int main(int argc, char*argv[])
+int main(int argc, char* argv[])
 {
     UNUSED(argc);
     UNUSED(argv);
 
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    WindowState window_state = {0};
 
-    if(initialize_SDL(&window, &renderer) != 0)
+    if(initialize_SDL(&window_state.window, &window_state.renderer) != 0)
         return 1;
 
-    game_loop(renderer);
+    game_loop(&window_state);
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(window_state.renderer);
+    SDL_DestroyWindow(window_state.window);
     SDL_Quit();
 
     return 0;
