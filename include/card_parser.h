@@ -1,13 +1,12 @@
 #ifndef CARD_PARSER_H
 #define CARD_PARSER_H
 
-#include "drawing.h"
 #include "error_code.h"
 #include "string.h"
+#include "texture.h"
 #include "types.h"
 
 #include <stdio.h>
-
 
 
 ErrorCode read_field(
