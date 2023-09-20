@@ -1,74 +1,69 @@
 #include "card_parser.h"
 
-#include "helpers.h"
-
-#include <ctype.h>
-
-
-ErrorCode read_field(
-    FILE card_data[static 1], const char* field_name, char* buffer, const char* buffer_start, const char* buffer_end
-)
-{
-    int c;
-    size_t offset = 0;
-
-    while(isspace(c = getc(card_data)))
-    {}
-
-    ungetc(c, card_data);
-
-    if(read_until(card_data, buffer, ':', 0) != ERR_OK)
-        return ERR_FILE_FORMAT;
-
-    if(strncmp(buffer, field_name, MAX_NAME_LEN) != 0)
-        return ERR_FILE_FORMAT;
-
-    fgetc(card_data);
-
-    if(buffer_start)
-    {
-        snprintf(buffer, MAX_NAME_LEN, buffer_start);
-
-        offset = strlen(buffer);
-    }
-
-    if(read_until(card_data, buffer, '\n', offset) != ERR_OK)
-        return ERR_FILE_FORMAT;
-
-    if(buffer_end)
-        strncat(buffer, buffer_end, MAX_NAME_LEN - strlen(buffer));
-
-    return ERR_OK;
-}
-
 ErrorCode parse_card_data(card_entry** card, FILE card_data[static 1], SDL_Renderer* renderer)
 {
     char buffer[MAX_NAME_LEN];
-
+    int offset;
     card_entry* to_add = malloc(sizeof(card_entry));
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 
+    // Check for opening brace
     if(strncmp(buffer, "{\n", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
-    if(read_field(card_data, "file_name", buffer, "assets/cards/", ".bmp") != ERR_OK)
+    fgets(buffer, MAX_NAME_LEN, card_data);
+
+    // Check file formatting
+    if(strncmp(strtok(buffer, "\n\t: "), "file_name", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
-    SDL_Texture* texture;
+    // Load relative path to file
+    offset = strlen("assets/cards/");
+    memmove(buffer + offset, strtok(NULL, "\n\t: "), MAX_NAME_LEN - offset);
+    memcpy(buffer, "assets/cards/", offset);
 
+    // Load the texture based on relative path from buffer
+    SDL_Texture* texture;
     if(load_texture(&texture, renderer, buffer) != ERR_OK)
         return ERR_FILE_FORMAT;
-
     to_add->texture = texture;
-
-    if(read_field(card_data, "card_name", buffer, NULL, NULL) != ERR_OK)
-        return ERR_FILE_FORMAT;
-
-    strcpy(to_add->name, buffer);
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 
+    // Check file formatting
+    if(strncmp(strtok(buffer, "\n\t: "), "card_name", MAX_NAME_LEN) != 0)
+        return ERR_FILE_FORMAT;
+
+    // Load card name from buffer
+    strncpy(to_add->name, strtok(NULL, "\n\t: "), MAX_NAME_LEN);
+
+    fgets(buffer, MAX_NAME_LEN, card_data);
+
+    // Check file formatting
+    if(strncmp(strtok(buffer, "\n\t: "), "scale", MAX_NAME_LEN) != 0)
+        return ERR_FILE_FORMAT;
+
+    // Load texture scale from buffer
+    if((to_add->scale = strtod(strtok(NULL, "\n\t: "), NULL)) == 0)
+        return ERR_FILE_FORMAT;
+
+    fgets(buffer, MAX_NAME_LEN, card_data);
+
+    // Check file formatting
+    if(strncmp(strtok(buffer, "\n\t: "), "cutout_rect", MAX_NAME_LEN) != 0)
+        return ERR_FILE_FORMAT;
+
+    // Load texture cutout rectangle from buffer
+    to_add->cutout_rect = (SDL_Rect
+    ){.x = atoi(strtok(NULL, "\n\t: ")),
+      .y = atoi(strtok(NULL, "\n\t: ")),
+      .w = (int) CARD_WIDTH * to_add->scale,
+      .h = (int) CARD_HEIGHT * to_add->scale};
+
+    fgets(buffer, MAX_NAME_LEN, card_data);
+
+    // Check for closing brace
     if(strcmp(buffer, "}\n") != 0)
         return ERR_FILE_FORMAT;
 

@@ -2,6 +2,7 @@
 
 #include "globals.h"
 
+#include <string.h>
 
 void add(card** head, card_entry** new_card)
 {
@@ -38,4 +39,18 @@ void free_cards(card** head)
         curr = next;
         next = curr->next;
     }
+}
+
+ErrorCode check_duplicate(card** head, card_entry* new_card)
+{
+    card* curr = *head;
+    while(curr != NULL)
+    {
+        if(strncmp(curr->data->name, new_card->name, MAX_NAME_LEN) == 0)
+            return ERR_CARD_DUP;
+
+        curr = curr->next;
+    }
+
+    return ERR_OK;
 }

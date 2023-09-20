@@ -1,16 +1,24 @@
 {
-    file_name: 1
-    card_name: strefa pakowania
+	file_name: strefa_pakowania.bmp
+	card_name: strefa_pakowania
+	scale: 0.313811
+	cutout_rect: 86 82
 }
 {
-    file_name: 2
-    card_name: zabij sie
+	file_name: wycieczka.bmp
+	card_name: wycieczka
+	scale: 0.310672
+	cutout_rect: 41 109
 }
 {
-    file_name: 3
-    card_name: wycieczka
+	file_name: zabij_sie.bmp
+	card_name: zabij_sie
+	scale: 0.526127
+	cutout_rect: 127 55
 }
 {
-    file_name: 4
-    card_name: zzzddd
+	file_name: zzzddd.bmp
+	card_name: zzzddd
+	scale: 0.430467
+	cutout_rect: 60 39
 }

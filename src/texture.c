@@ -30,7 +30,13 @@ ErrorCode load_card_data(card** head, SDL_Renderer* renderer)
     {
         if(parse_card_data(&curr_card, card_data, renderer) != ERR_OK)
         {
-            strcpy(error_msg, "Card data file format error");
+            strncpy(error_msg, "Card data file format error", MAX_NAME_LEN);
+            return ERR_FILE_FORMAT;
+        }
+
+        if(check_duplicate(head, curr_card) != ERR_OK)
+        {
+            strncpy(error_msg, "Duplicate card found", MAX_NAME_LEN);
             return ERR_FILE_FORMAT;
         }
 
