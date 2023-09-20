@@ -10,7 +10,7 @@
 
 typedef struct card_entry
 {
-    char name[MAX_NAME_LEN];
+    char name[MAX_NAME_LEN + 1];
     SDL_Texture* texture;
     SDL_Rect cutout_rect;
 } card_entry;

@@ -12,6 +12,6 @@ typedef enum ErrorCode
     ERR_CARD_DUP
 } ErrorCode;
 
-extern char error_msg[MAX_NAME_LEN];
+extern char error_msg[MAX_NAME_LEN + 1];
 
 #endif

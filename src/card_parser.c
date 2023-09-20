@@ -2,7 +2,7 @@
 
 ErrorCode parse_card_data(card_entry** card, FILE card_data[static 1], SDL_Renderer* renderer)
 {
-    char buffer[MAX_NAME_LEN];
+    char buffer[MAX_NAME_LEN + 1];
     int offset;
     card_entry* to_add = malloc(sizeof(card_entry));
 
