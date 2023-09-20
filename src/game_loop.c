@@ -83,20 +83,18 @@ void game_loop(WindowState* window_state)
         if(!window_state->is_fullscreen)
             draw_bar(window_state->renderer, bar);
 
-        SDL_Rect card_rect;
-
         SDL_RenderFillRect(window_state->renderer, NULL);
 
-        SDL_QueryTexture((SDL_Texture*) curr_card->data->texture, NULL, NULL, &card_rect.w, &card_rect.h);
+        SDL_Rect card_rect;
 
-        card_rect.w = card_rect.w / 2;
-        card_rect.h = card_rect.h / 2;
+        card_rect.w = 4 * CARD_WIDTH;
+        card_rect.h = 4 * CARD_HEIGHT;
         card_rect.x = GAME_VIEWPORT.w / 2 - card_rect.w / 2;
         card_rect.y = GAME_VIEWPORT.h / 2 - card_rect.h / 2;
 
         SDL_RenderCopyEx(
-            window_state->renderer, (SDL_Texture*) curr_card->data->texture, NULL, &card_rect, angle, NULL,
-            SDL_FLIP_NONE
+            window_state->renderer, (SDL_Texture*) curr_card->data->texture, &curr_card->data->cutout_rect, &card_rect,
+            angle, NULL, SDL_FLIP_NONE
         );
 
         SDL_RenderPresent(window_state->renderer);

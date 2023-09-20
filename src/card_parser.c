@@ -41,16 +41,6 @@ ErrorCode parse_card_data(card_entry** card, FILE card_data[static 1], SDL_Rende
     fgets(buffer, MAX_NAME_LEN, card_data);
 
     // Check file formatting
-    if(strncmp(strtok(buffer, "\n\t: "), "scale", MAX_NAME_LEN) != 0)
-        return ERR_FILE_FORMAT;
-
-    // Load texture scale from buffer
-    if((to_add->scale = strtod(strtok(NULL, "\n\t: "), NULL)) == 0)
-        return ERR_FILE_FORMAT;
-
-    fgets(buffer, MAX_NAME_LEN, card_data);
-
-    // Check file formatting
     if(strncmp(strtok(buffer, "\n\t: "), "cutout_rect", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
@@ -58,8 +48,8 @@ ErrorCode parse_card_data(card_entry** card, FILE card_data[static 1], SDL_Rende
     to_add->cutout_rect = (SDL_Rect
     ){.x = atoi(strtok(NULL, "\n\t: ")),
       .y = atoi(strtok(NULL, "\n\t: ")),
-      .w = (int) CARD_WIDTH * to_add->scale,
-      .h = (int) CARD_HEIGHT * to_add->scale};
+      .w = atoi(strtok(NULL, "\n\t: ")),
+      .h = atoi(strtok(NULL, "\n\t: "))};
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 
