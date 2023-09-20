@@ -3,6 +3,9 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 import os
 
+rect_width = 64
+rect_height = 89
+
 def open_image():
     global img, photo, canvas, rectangle, current_zoom, save_button, img_x, img_y, image_path
     file_path = filedialog.askopenfilename(filetypes=[("BMP files", "*.bmp")])
@@ -33,8 +36,8 @@ def resize_and_display():
     create_rectangle(img_x, img_y)
 
 def create_rectangle(x, y):
-    global rectangle
-    rectangle = canvas.create_rectangle(x, y, x + 64, y + 89, outline="red", width=2)
+    global rectangle, rect_width, rect_height
+    rectangle = canvas.create_rectangle(x, y, x + rect_width, y + rect_height, outline="red", width=2)
     canvas.tag_bind(rectangle, "<ButtonPress-1>", start_drag)
     canvas.tag_bind(rectangle, "<B1-Motion>", drag)
 
@@ -57,22 +60,18 @@ def scale_image(event):
 
 def save_data():
     global current_zoom, img_x, img_y, image_path
-    x1, y1, w, h = canvas.coords(rectangle)
-    w -= x1
-    h -= y1
+    x1, y1, _, _ = canvas.coords(rectangle)
     x1 -= img_x
     y1 -= img_y
     x1 /= current_zoom
-    w /= current_zoom
     y1 /= current_zoom
-    h /= current_zoom
     
 
     with open(os.path.curdir + "/assets/cards/card_data.bruh", "a") as file:
         file.write("{\n")
         file.write(f"\tfile_name: {image_path}\n")
         file.write(f"\tcard_name: {image_path.removesuffix('.bmp')}\n")
-        file.write(f"\tcutout_rect: {int(x1)} {int(y1)} {int(w)} {int(h)}\n")
+        file.write(f"\tcutout_rect: {int(x1)} {int(y1)} {int(rect_width / current_zoom)} {int(rect_height / current_zoom)}\n")
         file.write("}\n")
 
 if __name__ == "__main__":
