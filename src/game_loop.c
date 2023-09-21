@@ -61,15 +61,17 @@ void game_loop(WindowState* window_state)
 
     SDL_RenderSetViewport(window_state->renderer, &GAME_VIEWPORT);
 
-    card* cards = {0};
+    card_vec cards = {0};
 
     if(load_card_data(&cards, window_state->renderer) != ERR_OK)
     {
         puts(error_msg);
+        free_cards(&cards);
+        SDL_DestroyTexture(bar);
         return;
     }
 
-    card* curr_card = cards;
+    unsigned curr_card_id = 0;
 
     while(!window_state->quit)
     {
@@ -93,15 +95,15 @@ void game_loop(WindowState* window_state)
         card_rect.y = GAME_VIEWPORT.h / 2 - card_rect.h / 2;
 
         SDL_RenderCopyEx(
-            window_state->renderer, (SDL_Texture*) curr_card->data->texture, &curr_card->data->cutout_rect, &card_rect,
-            angle, NULL, SDL_FLIP_NONE
+            window_state->renderer, cards.data[curr_card_id]->texture, &cards.data[curr_card_id]->cutout_rect,
+            &card_rect, angle, NULL, SDL_FLIP_NONE
         );
 
         SDL_RenderPresent(window_state->renderer);
 
         if((++counter % FPS) == 0)
-            if((curr_card = curr_card->next) == NULL)
-                curr_card = cards;
+            if(++curr_card_id == cards.size)
+                curr_card_id = 0;
 
         angle = fmod(angle + (30.0 / FPS), 360.0);
 

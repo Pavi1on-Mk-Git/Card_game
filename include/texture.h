@@ -7,6 +7,6 @@
 
 
 ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char* path);
-ErrorCode load_card_data(card** head, SDL_Renderer* renderer);
+ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer);
 
 #endif

@@ -15,14 +15,14 @@ typedef struct card_entry
     SDL_Rect cutout_rect;
 } card_entry;
 
-typedef struct card
+typedef struct card_vec
 {
-    struct card_entry* data;
-    struct card* next;
-} card;
+    card_entry** data;
+    size_t size, capacity;
+} card_vec;
 
-void add(card** head, card_entry** new_card);
-void free_cards(card** head);
-ErrorCode check_duplicate(card** head, card_entry* new_card);
+void add(card_vec* head, card_entry* new_card);
+void free_cards(card_vec* head);
+ErrorCode check_duplicate(card_vec* head, card_entry* new_card);
 
 #endif

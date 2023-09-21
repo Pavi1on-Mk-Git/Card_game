@@ -4,52 +4,32 @@
 
 #include <string.h>
 
-void add(card** head, card_entry** new_card)
+void add(card_vec* head, card_entry* new_card)
 {
-    card* new_entry = malloc(sizeof(card));
+    if(head->size == head->capacity)
+        head->data = realloc(
+            head->data, sizeof(card_entry) * (head->capacity ? (head->capacity *= 2) : (head->capacity = 1))
+        );
 
-    new_entry->data = *new_card;
-    new_entry->next = NULL;
-
-    if(*head == NULL)
-    {
-        *head = new_entry;
-        return;
-    }
-
-    card* curr = *head;
-
-    while(curr->next != NULL)
-        curr = curr->next;
-
-    curr->next = new_entry;
+    head->data[head->size++] = new_card;
 }
 
-void free_cards(card** head)
+void free_cards(card_vec* head)
 {
-    card* curr = *head;
-    card* next = curr->next;
-
-    while(next != NULL)
+    for(unsigned i = 0; i < head->size; i++)
     {
-        SDL_DestroyTexture(curr->data->texture);
-        free(curr->data);
-        free(curr);
-
-        curr = next;
-        next = curr->next;
+        SDL_DestroyTexture(head->data[i]->texture);
+        free(head->data[i]);
+        free(head->data);
     }
 }
 
-ErrorCode check_duplicate(card** head, card_entry* new_card)
+ErrorCode check_duplicate(card_vec* head, card_entry* new_card)
 {
-    card* curr = *head;
-    while(curr != NULL)
+    for(unsigned i = 0; i < head->size; i++)
     {
-        if(strncmp(curr->data->name, new_card->name, MAX_NAME_LEN) == 0)
+        if(strncmp(head->data[i]->name, new_card->name, MAX_NAME_LEN) == 0)
             return ERR_CARD_DUP;
-
-        curr = curr->next;
     }
 
     return ERR_OK;
