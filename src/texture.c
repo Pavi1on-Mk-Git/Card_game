@@ -27,25 +27,23 @@ ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer)
 
     do
     {
-        card_entry* curr_card = calloc(1, sizeof(card_entry));
+        card_entry curr_card;
 
-        if(parse_card_data(curr_card, card_data, renderer) != ERR_OK)
+        if(parse_card_data(&curr_card, card_data, renderer) != ERR_OK)
         {
             strncpy(error_msg, "Card data file format error", MAX_NAME_LEN);
-            SDL_DestroyTexture(curr_card->texture);
-            free(curr_card);
+            SDL_DestroyTexture(curr_card.texture);
             return ERR_FILE_FORMAT;
         }
 
-        if(check_duplicate(head, curr_card) != ERR_OK)
+        if(check_duplicate(head, &curr_card) != ERR_OK)
         {
             strncpy(error_msg, "Duplicate card found", MAX_NAME_LEN);
-            SDL_DestroyTexture(curr_card->texture);
-            free(curr_card);
+            SDL_DestroyTexture(curr_card.texture);
             return ERR_FILE_FORMAT;
         }
 
-        add(head, curr_card);
+        add(head, &curr_card);
 
         next_char = fgetc(card_data);
         ungetc(next_char, card_data);

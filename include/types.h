@@ -17,7 +17,7 @@ typedef struct card_entry
 
 typedef struct card_vec
 {
-    card_entry** data;
+    card_entry* data;
     size_t size, capacity;
 } card_vec;
 

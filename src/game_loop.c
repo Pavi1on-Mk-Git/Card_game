@@ -95,8 +95,8 @@ void game_loop(WindowState* window_state)
         card_rect.y = GAME_VIEWPORT.h / 2 - card_rect.h / 2;
 
         SDL_RenderCopyEx(
-            window_state->renderer, cards.data[curr_card_id]->texture, &cards.data[curr_card_id]->cutout_rect,
-            &card_rect, angle, NULL, SDL_FLIP_NONE
+            window_state->renderer, cards.data[curr_card_id].texture, &cards.data[curr_card_id].cutout_rect, &card_rect,
+            angle, NULL, SDL_FLIP_NONE
         );
 
         SDL_RenderPresent(window_state->renderer);
