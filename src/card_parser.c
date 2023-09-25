@@ -4,6 +4,7 @@ ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Render
 {
     char buffer[MAX_NAME_LEN + 1];
     int offset;
+    char* strtok_s_state;
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 
@@ -14,13 +15,16 @@ ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Render
     fgets(buffer, MAX_NAME_LEN, card_data);
 
     // Check file formatting
-    if(strncmp(strtok(buffer, "\n\t: "), "file_name", MAX_NAME_LEN) != 0)
+    if(strncmp(strtok_s(buffer, "\n\t: ", &strtok_s_state), "file_name", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
     // Load relative path to file
     offset = strlen("assets/cards/");
-    memmove(buffer + offset, strtok(NULL, "\n\t: "), MAX_NAME_LEN - offset);
-    memcpy(buffer, "assets/cards/", offset);
+    if(memmove_s(buffer + offset, sizeof(buffer), strtok_s(NULL, "\n\t: ", &strtok_s_state), MAX_NAME_LEN - offset) !=
+       0)
+        return ERR_FILE_FORMAT;
+    if(memcpy_s(buffer, sizeof(buffer), "assets/cards/", offset))
+        return ERR_FILE_FORMAT;
 
     // Load the texture based on relative path from buffer
     SDL_Texture* texture;
@@ -31,24 +35,24 @@ ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Render
     fgets(buffer, MAX_NAME_LEN, card_data);
 
     // Check file formatting
-    if(strncmp(strtok(buffer, "\n\t: "), "card_name", MAX_NAME_LEN) != 0)
+    if(strncmp(strtok_s(buffer, "\n\t: ", &strtok_s_state), "card_name", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
     // Load card name from buffer
-    strncpy(card->name, strtok(NULL, "\n\t: "), MAX_NAME_LEN);
+    strncpy(card->name, strtok_s(NULL, "\n\t: ", &strtok_s_state), MAX_NAME_LEN);
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 
     // Check file formatting
-    if(strncmp(strtok(buffer, "\n\t: "), "cutout_rect", MAX_NAME_LEN) != 0)
+    if(strncmp(strtok_s(buffer, "\n\t: ", &strtok_s_state), "cutout_rect", MAX_NAME_LEN) != 0)
         return ERR_FILE_FORMAT;
 
     // Load texture cutout rectangle from buffer
     card->cutout_rect = (SDL_Rect
-    ){.x = atoi(strtok(NULL, "\n\t: ")),
-      .y = atoi(strtok(NULL, "\n\t: ")),
-      .w = atoi(strtok(NULL, "\n\t: ")),
-      .h = atoi(strtok(NULL, "\n\t: "))};
+    ){.x = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
+      .y = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
+      .w = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
+      .h = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))};
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 

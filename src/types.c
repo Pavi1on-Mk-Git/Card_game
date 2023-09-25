@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-void add(card_vec* head, card_entry* new_card)
+void push_back(card_vec* head, card_entry* new_card)
 {
     if(head->size == head->capacity)
         head->data = realloc(
@@ -12,6 +12,19 @@ void add(card_vec* head, card_entry* new_card)
         );
 
     head->data[head->size++] = *new_card;
+}
+
+int compare_cards(void* context, const void* first, const void* second)
+{
+    UNUSED(context);
+    const card_entry* first_card = (const card_entry*) first;
+    const card_entry* second_card = (const card_entry*) second;
+    return strncmp(first_card->name, second_card->name, MAX_NAME_LEN);
+}
+
+void sort_vec(card_vec* head)
+{
+    qsort_s(head->data, head->size, sizeof(card_entry), compare_cards, NULL);
 }
 
 void free_cards(card_vec* head)

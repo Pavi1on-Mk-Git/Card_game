@@ -43,12 +43,14 @@ ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer)
             return ERR_FILE_FORMAT;
         }
 
-        add(head, &curr_card);
+        push_back(head, &curr_card);
 
         next_char = fgetc(card_data);
         ungetc(next_char, card_data);
     }
     while(next_char != EOF);
+
+    sort_vec(head);
 
     fclose(card_data);
 

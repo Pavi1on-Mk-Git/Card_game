@@ -21,7 +21,9 @@ typedef struct card_vec
     size_t size, capacity;
 } card_vec;
 
-void add(card_vec* head, card_entry* new_card);
+void push_back(card_vec* head, card_entry* new_card);
+int compare_cards(void* context, const void* first, const void* second);
+void sort_vec(card_vec* head);
 void free_cards(card_vec* head);
 ErrorCode check_duplicate(card_vec* head, card_entry* new_card);
 
