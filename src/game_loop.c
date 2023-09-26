@@ -1,12 +1,17 @@
 #include "game_loop.h"
 
+#include "drawing.h"
+#include "event_handlers.h"
+#include "texture.h"
+
 #include <math.h>
+#include <string.h>
 
 ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
 {
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SDL Initialization failed: %s\n", SDL_GetError());
+        SDL_Log("SDL Initialization failed: %s\n", SDL_GetError());
         return ERR_INIT;
     }
 
@@ -17,14 +22,14 @@ ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
 
     if(window == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Window creation failed: %s\n", SDL_GetError());
+        SDL_Log("Window creation failed: %s\n", SDL_GetError());
         return ERR_INIT;
     }
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
     if(renderer == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Renderer creation failed: %s\n", SDL_GetError());
+        SDL_Log("Renderer creation failed: %s\n", SDL_GetError());
         return ERR_INIT;
     }
 
@@ -55,7 +60,7 @@ void game_loop(WindowState* window_state)
     if(load_texture(&bar, window_state->renderer, "assets/bar.bmp") != ERR_OK)
     {
         strcpy(error_msg, "Couldn't load the bar texture");
-        puts(error_msg);
+        SDL_Log(error_msg);
         return;
     }
 
@@ -65,7 +70,7 @@ void game_loop(WindowState* window_state)
 
     if(load_card_data(&cards, window_state->renderer) != ERR_OK)
     {
-        puts(error_msg);
+        SDL_Log(error_msg);
         free_cards(&cards);
         SDL_DestroyTexture(bar);
         return;
@@ -95,8 +100,8 @@ void game_loop(WindowState* window_state)
         card_rect.y = GAME_VIEWPORT.h / 2 - card_rect.h / 2;
 
         SDL_RenderCopyEx(
-            window_state->renderer, cards.data[curr_card_id].texture, &cards.data[curr_card_id].cutout_rect, &card_rect,
-            angle, NULL, SDL_FLIP_NONE
+            window_state->renderer, cards.data[curr_card_id]->texture, &cards.data[curr_card_id]->cutout_rect,
+            &card_rect, angle, NULL, SDL_FLIP_NONE
         );
 
         SDL_RenderPresent(window_state->renderer);

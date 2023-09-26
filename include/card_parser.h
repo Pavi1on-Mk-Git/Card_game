@@ -2,8 +2,7 @@
 #define CARD_PARSER_H
 
 #include "error_code.h"
-#include "string.h"
-#include "texture.h"
+#include "globals.h"
 #include "types.h"
 
 #include <stdio.h>

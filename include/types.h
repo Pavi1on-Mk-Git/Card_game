@@ -17,14 +17,14 @@ typedef struct card_entry
 
 typedef struct card_vec
 {
-    card_entry* data;
+    card_entry** data;
     size_t size, capacity;
 } card_vec;
 
-void push_back(card_vec* head, card_entry* new_card);
+void push_back(card_vec* vec, card_entry* new_card);
 int compare_cards(void* context, const void* first, const void* second);
-void sort_vec(card_vec* head);
-void free_cards(card_vec* head);
-ErrorCode check_duplicate(card_vec* head, card_entry* new_card);
+void sort_vec(card_vec* vec);
+void free_cards(card_vec* vec);
+ErrorCode check_duplicate(const card_vec* vec, const card_entry* new_card);
 
 #endif

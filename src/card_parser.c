@@ -1,5 +1,9 @@
 #include "card_parser.h"
 
+#include "texture.h"
+
+#include <string.h>
+
 ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Renderer* renderer)
 {
     char buffer[MAX_NAME_LEN + 1];
