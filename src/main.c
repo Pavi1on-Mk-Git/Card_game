@@ -1,4 +1,5 @@
 #include "game_loop.h"
+#include "globals.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,6 +10,8 @@ int main(int argc, char* argv[])
 
     if(initialize_SDL(&window_state.window, &window_state.renderer) != 0)
         return 1;
+
+    setup_viewports();
 
     game_loop(&window_state);
 

@@ -66,6 +66,8 @@ void handle_bar(WindowState* window_state)
                 SDL_RenderSetLogicalSize(window_state->renderer, SCREEN_WIDTH, BASE_SCREEN_HEIGHT);
                 window_state->want_fullscreen = SDL_FALSE;
                 window_state->is_fullscreen = SDL_TRUE;
+                for(unsigned i = 0; i < GAME_VIEWPORT_COUNT; i++)
+                    game_viewports[i].y -= BAR_HEIGHT;
             }
             else if(window_state->want_min && SDL_PointInRect(&mouse, &MIN_BUTTON))
             {
@@ -81,6 +83,8 @@ void handle_bar(WindowState* window_state)
         {
             SDL_SetWindowFullscreen(window_state->window, 0);
             window_state->is_fullscreen = SDL_FALSE;
+            for(unsigned i = 0; i < GAME_VIEWPORT_COUNT; i++)
+                game_viewports[i].y += BAR_HEIGHT;
         }
         break;
     }

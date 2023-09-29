@@ -51,11 +51,9 @@ void game_loop(WindowState* window_state)
     double angle = 0;
     int counter = 0;
 
-    SDL_Texture* bar;
-
     SDL_SetRenderDrawColor(window_state->renderer, 0x78, 0x20, 0x1c, 0xff);
 
-    SDL_RenderSetViewport(window_state->renderer, &BAR_VIEWPORT);
+    SDL_Texture* bar;
 
     if(load_texture(&bar, window_state->renderer, "assets/bar.bmp") != ERR_OK)
     {
@@ -63,8 +61,6 @@ void game_loop(WindowState* window_state)
         SDL_Log(error_msg);
         return;
     }
-
-    SDL_RenderSetViewport(window_state->renderer, &GAME_VIEWPORT);
 
     card_vec cards = {0};
 
@@ -90,7 +86,9 @@ void game_loop(WindowState* window_state)
         if(!window_state->is_fullscreen)
             draw_bar(window_state->renderer, bar);
 
-        SDL_RenderFillRect(window_state->renderer, NULL);
+        SDL_RenderSetViewport(window_state->renderer, &GAME_VIEWPORT);
+
+        SDL_RenderFillRect(window_state->renderer, NULL); // Clear the game viewport
 
         SDL_Rect card_rect;
 
