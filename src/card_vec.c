@@ -1,11 +1,11 @@
-#include "types.h"
-
-#include "globals.h"
+#include "card_vec.h"
 
 #include <string.h>
 
 void push_back(card_vec* vec, card_entry* new_card)
 {
+    if(!vec || !new_card)
+        return;
     if(vec->size == vec->capacity)
         vec->data = realloc(
             vec->data, sizeof(card_entry*) * (vec->capacity ? (vec->capacity *= 2) : (vec->capacity = 1))
@@ -24,11 +24,14 @@ int compare_cards(void* context, const void* first, const void* second)
 
 void sort_vec(card_vec* vec)
 {
-    qsort_s(vec->data, vec->size, sizeof(card_entry*), compare_cards, NULL);
+    if(vec)
+        qsort_s(vec->data, vec->size, sizeof(card_entry*), compare_cards, NULL);
 }
 
 void free_cards(card_vec* head)
 {
+    if(!head)
+        return;
     for(unsigned i = 0; i < head->size; i++)
     {
         SDL_DestroyTexture(head->data[i]->texture);
@@ -40,11 +43,12 @@ void free_cards(card_vec* head)
 
 ErrorCode check_duplicate(const card_vec* vec, const card_entry* new_card)
 {
+    if(!vec || !new_card)
+        return ERR_NULL;
     for(unsigned i = 0; i < vec->size; i++)
     {
         if(strncmp(vec->data[i]->name, new_card->name, MAX_NAME_LEN) == 0)
             return ERR_CARD_DUP;
     }
-
     return ERR_OK;
 }

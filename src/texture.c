@@ -26,6 +26,9 @@ ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char
 
 ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer)
 {
+    if(!head)
+        return ERR_NULL;
+
     FILE* card_data = fopen("assets/cards/card_data.bruh", "r");
     int next_char;
 

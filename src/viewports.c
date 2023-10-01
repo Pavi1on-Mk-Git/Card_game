@@ -1,0 +1,18 @@
+#include "viewports.h"
+
+SDL_FRect game_viewports[GAME_VIEWPORT_COUNT];
+
+void setup_viewports()
+{
+    GAME_VIEWPORT = (SDL_FRect){.x = 0, .y = BAR_HEIGHT, .w = MIN_BUTTON.x - BUTTON_BORDER, .h = BASE_SCREEN_HEIGHT};
+    RIGHT_BAR_VIEWPORT = (SDL_FRect
+    ){.x = MIN_BUTTON.x - BUTTON_BORDER,
+      .y = BAR_HEIGHT,
+      .w = SCREEN_WIDTH - MIN_BUTTON.x + BUTTON_BORDER,
+      .h = BASE_SCREEN_HEIGHT};
+
+    DRAW_BUTTON.w = 141;
+    DRAW_BUTTON.h = 47;
+    DRAW_BUTTON.x = RIGHT_BAR_VIEWPORT.x + (RIGHT_BAR_VIEWPORT.w - DRAW_BUTTON.w) / 2;
+    DRAW_BUTTON.y = RIGHT_BAR_VIEWPORT.y + (RIGHT_BAR_VIEWPORT.h - DRAW_BUTTON.h) / 2;
+}

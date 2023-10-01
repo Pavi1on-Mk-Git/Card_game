@@ -1,0 +1,17 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define UNUSED(x) (void) (x)
+
+#define SCREEN_WIDTH 1280
+#define BASE_SCREEN_HEIGHT 720
+#define BAR_HEIGHT 34
+#define BUTTON_WIDTH ((3 * BAR_HEIGHT) / 2)
+#define BUTTON_BORDER 3
+#define SCREEN_HEIGHT (BASE_SCREEN_HEIGHT + BAR_HEIGHT)
+#define FPS 120
+#define MAX_NAME_LEN 64
+
+#define FRAME_TIME 1000.0 / FPS
+
+#endif

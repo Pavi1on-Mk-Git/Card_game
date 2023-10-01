@@ -1,12 +1,15 @@
 #include "game_loop.h"
-#include "globals.h"
+#include "player_state.h"
+#include "viewports.h"
+#include "window_state.h"
+
+WindowState window_state = {0};
+PlayerState player_state = {0};
 
 int main(int argc, char* argv[])
 {
     UNUSED(argc);
     UNUSED(argv);
-
-    WindowState window_state = {0};
 
     if(initialize_SDL(&window_state.window, &window_state.renderer) != 0)
         return 1;
@@ -15,6 +18,7 @@ int main(int argc, char* argv[])
 
     game_loop(&window_state);
 
+    free_cards(&player_state.hand);
     SDL_DestroyRenderer(window_state.renderer);
     SDL_DestroyWindow(window_state.window);
     SDL_Quit();

@@ -1,9 +1,10 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef CARD_VEC_H
+#define CARD_VEC_H
 
+#include "constants.h"
 #include "error_code.h"
-#include "globals.h"
 
+#include <SDL2/SDL.h>
 
 #define CARD_WIDTH 64
 #define CARD_HEIGHT 89
