@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef LOADING_H
+#define LOADING_H
 
 #include "card_vec.h"
 #include "error_code.h"

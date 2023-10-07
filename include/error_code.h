@@ -11,6 +11,7 @@ typedef enum ErrorCode
     ERR_SDL,
     ERR_CARD_DUP,
     ERR_NULL,
+    ERR_TEXTURE,
 }
 
 ErrorCode;

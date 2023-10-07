@@ -3,7 +3,8 @@
 #include "drawing.h"
 #include "event_handlers.h"
 #include "helpers.h"
-#include "texture.h"
+#include "loading.h"
+#include "textures.h"
 #include "window_state.h"
 
 #include <math.h>
@@ -50,29 +51,9 @@ void delay()
 
 void game_loop()
 {
-    SDL_Texture *bar, *button;
-
-    if(load_texture(&bar, window_state.renderer, "assets/bar.bmp") != ERR_OK)
-    {
-        strcpy(error_msg, "Couldn't load the bar texture");
-        SDL_Log(error_msg);
-        return;
-    }
-
-    if(load_texture(&button, window_state.renderer, "assets/button.bmp") != ERR_OK)
-    {
-        strcpy(error_msg, "Couldn't load the button texture");
-        SDL_Log(error_msg);
-        return;
-    }
-
-    card_vec cards = {0};
-
-    if(load_card_data(&cards, window_state.renderer) != ERR_OK)
+    if(load_all_textures() != ERR_OK)
     {
         SDL_Log(error_msg);
-        free_cards(&cards);
-        SDL_DestroyTexture(bar);
         return;
     }
 
@@ -100,7 +81,4 @@ void game_loop()
 
         delay();
     }
-    free_cards(&cards);
-    SDL_DestroyTexture(button);
-    SDL_DestroyTexture(bar);
 }
