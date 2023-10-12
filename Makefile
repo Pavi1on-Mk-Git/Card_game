@@ -13,7 +13,7 @@ else
 	OCFLAGS = -Ofast -mwindows
 endif
 
-CFLAGS = -Wall -Werror -Wextra -Wpedantic -I$(INC_DIR) -L$(LIB_DIR) $(OCFLAGS)
+CFLAGS = -Wall -Werror -Wextra -Wpedantic -fanalyzer -I$(INC_DIR) -L$(LIB_DIR) $(OCFLAGS)
 LDFLAGS = -lmingw32 -lSDL2main -lSDL2
 
 SRC = $(wildcard $(SRC_DIR)/*.c)
