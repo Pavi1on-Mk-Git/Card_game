@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Renderer* renderer)
+ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1])
 {
     char buffer[MAX_NAME_LEN + 1];
     int offset;
@@ -32,7 +32,7 @@ ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Render
 
     // Load the texture based on relative path from buffer
     SDL_Texture* texture;
-    if(load_texture(&texture, renderer, buffer) != ERR_OK)
+    if(load_texture(&texture, buffer) != ERR_OK)
         return ERR_FILE_FORMAT;
     card->texture = texture;
 
@@ -52,11 +52,17 @@ ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1], SDL_Render
         return ERR_FILE_FORMAT;
 
     // Load texture cutout rectangle from buffer
-    card->cutout_rect = (SDL_Rect
-    ){.x = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
-      .y = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
-      .w = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state)),
-      .h = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))};
+    if((card->cutout_rect.x = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))) == 0)
+        return ERR_FILE_FORMAT;
+
+    if((card->cutout_rect.y = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))) == 0)
+        return ERR_FILE_FORMAT;
+
+    if((card->cutout_rect.w = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))) == 0)
+        return ERR_FILE_FORMAT;
+
+    if((card->cutout_rect.h = atoi(strtok_s(NULL, "\n\t: ", &strtok_s_state))) == 0)
+        return ERR_FILE_FORMAT;
 
     fgets(buffer, MAX_NAME_LEN, card_data);
 

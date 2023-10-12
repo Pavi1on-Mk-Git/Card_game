@@ -51,7 +51,7 @@ void delay()
 
 void game_loop()
 {
-    if(load_all_textures() != ERR_OK)
+    if(load_all_interactables() != ERR_OK)
     {
         SDL_Log(error_msg);
         return;
@@ -64,18 +64,19 @@ void game_loop()
         while(SDL_PollEvent(&window_state.event))
         {
             if(!window_state.is_fullscreen)
-                handle_bar();
+                BAR.handle();
 
             handle_esc();
-            handle_draw_button(&cards);
+            handle_draw_button();
+            handle_card_grab();
         }
 
         if(!window_state.is_fullscreen)
-            draw_bar(window_state.renderer, bar);
+            BAR.draw();
 
-        draw_game_viewport(window_state.renderer);
+        draw_game_viewport();
 
-        draw_right_bar_viewport(window_state.renderer, button);
+        draw_right_bar_viewport();
 
         SDL_RenderPresent(window_state.renderer);
 

@@ -1,34 +1,42 @@
 #include "textures.h"
 
-card_vec cards = {0};
-SDL_Texture *bar, *button;
+#include "drawing.h"
+#include "event_handlers.h"
+#include "viewports.h"
 
-ErrorCode load_all_textures()
+card_vec cards;
+interactable interactables[INTER_COUNT];
+
+ErrorCode load_all_interactables()
 {
-    ErrorCode card_err = load_card_data(&cards, window_state.renderer);
+    ErrorCode card_err = load_card_data(&cards);
     if(card_err != ERR_OK)
     {
         return card_err;
     }
 
-    if(load_texture(&bar, window_state.renderer, "assets/bar.bmp") != ERR_OK)
+    if(load_texture(&BAR.texture, "assets/bar.bmp") != ERR_OK)
     {
         strcpy(error_msg, "Couldn't load the bar texture");
         return ERR_TEXTURE;
     }
+    BAR.draw = draw_bar;
+    BAR.handle = handle_bar;
 
-    if(load_texture(&button, window_state.renderer, "assets/button.bmp") != ERR_OK)
+    if(load_texture(&DRAW_BUTTON.texture, "assets/button.bmp") != ERR_OK)
     {
         strcpy(error_msg, "Couldn't load the button texture");
         return ERR_TEXTURE;
     }
+    DRAW_BUTTON.draw = draw_draw_button;
+    DRAW_BUTTON.handle = handle_draw_button;
 
     return ERR_OK;
 }
 
-void free_all_textures()
+void free_all_interactables()
 {
     free_cards(&cards);
-    SDL_DestroyTexture(bar);
-    SDL_DestroyTexture(button);
+    for(unsigned i = 0; i < INTER_COUNT; i++)
+        SDL_DestroyTexture(interactables[i].texture);
 }

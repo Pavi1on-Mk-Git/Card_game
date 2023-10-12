@@ -1,10 +1,11 @@
 #include "loading.h"
 
 #include "card_parser.h"
+#include "window_state.h"
 
 #include <string.h>
 
-ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char* path)
+ErrorCode load_texture(SDL_Texture** texture, const char* path)
 {
     SDL_Surface* surface = SDL_LoadBMP(path);
 
@@ -14,7 +15,7 @@ ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char
         return ERR_FILE_FORMAT;
     }
 
-    if((*texture = SDL_CreateTextureFromSurface(renderer, surface)) == NULL)
+    if((*texture = SDL_CreateTextureFromSurface(window_state.renderer, surface)) == NULL)
     {
         SDL_FreeSurface(surface);
         return ERR_SDL;
@@ -24,7 +25,7 @@ ErrorCode load_texture(SDL_Texture** texture, SDL_Renderer* renderer, const char
     return ERR_OK;
 }
 
-ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer)
+ErrorCode load_card_data(card_vec* head)
 {
     if(!head)
         return ERR_NULL;
@@ -36,7 +37,7 @@ ErrorCode load_card_data(card_vec* head, SDL_Renderer* renderer)
     {
         card_entry* curr_card = calloc(1, sizeof(card_entry));
 
-        if(parse_card_data(curr_card, card_data, renderer) != ERR_OK)
+        if(parse_card_data(curr_card, card_data) != ERR_OK)
         {
             strncpy(error_msg, "Card data file format error", MAX_NAME_LEN);
             SDL_DestroyTexture(curr_card->texture);

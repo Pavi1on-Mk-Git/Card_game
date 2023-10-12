@@ -2,6 +2,7 @@
 
 #include "helpers.h"
 #include "player_state.h"
+#include "textures.h"
 #include "viewports.h"
 #include "window_state.h"
 
@@ -15,7 +16,7 @@ void handle_bar()
         {
             SDL_FPoint mouse;
 
-            get_logical_mouse(window_state.renderer, &mouse.x, &mouse.y);
+            get_logical_mouse(&mouse.x, &mouse.y);
 
             if(SDL_PointInFRect(&mouse, &EXIT_BUTTON))
             {
@@ -63,7 +64,7 @@ void handle_bar()
 
             SDL_FPoint mouse;
 
-            get_logical_mouse(window_state.renderer, &mouse.x, &mouse.y);
+            get_logical_mouse(&mouse.x, &mouse.y);
 
             if(window_state.want_exit && SDL_PointInFRect(&mouse, &EXIT_BUTTON))
             {
@@ -105,7 +106,7 @@ void handle_esc()
     }
 }
 
-void handle_draw_button(card_vec* cards)
+void handle_draw_button()
 {
     switch(window_state.event.type)
     {
@@ -114,13 +115,45 @@ void handle_draw_button(card_vec* cards)
         {
             SDL_FPoint mouse;
 
-            get_logical_mouse(window_state.renderer, &mouse.x, &mouse.y);
+            get_logical_mouse(&mouse.x, &mouse.y);
 
-            if(SDL_PointInFRect(&mouse, &DRAW_BUTTON))
+            if(SDL_PointInFRect(&mouse, &DRAW_BUTTON_VIEWPORT))
             {
-                if(player_state.hand.size < 10)
-                    push_back(&player_state.hand, cards->data[rand() % cards->size]);
+                if(player_state.hand.size < MAX_HAND_SIZE)
+                    push_back(&player_state.hand, cards.data[rand() % cards.size]);
             }
+        }
+        break;
+    }
+}
+
+void handle_card_grab()
+{
+    switch(window_state.event.type)
+    {
+    case SDL_MOUSEBUTTONDOWN:
+        if(window_state.event.button.button == SDL_BUTTON_LEFT)
+        {
+            for(int i = player_state.hand.size - 1; i >= 0; i--)
+            {
+                if(mouse_in_rotated_rect(
+                       &player_state.rotation_data.dest_rect,
+                       &(SDL_FPoint
+                       ){.x = player_state.rotation_data.rot_center.x + player_state.rotation_data.dest_rect.x,
+                         .y = player_state.rotation_data.rot_center.y + player_state.rotation_data.dest_rect.y},
+                       player_state.rotation_data.angles[i]
+                   ))
+                {
+                    player_state.card_grab_bitmap[i] = SDL_TRUE;
+                    break;
+                }
+            }
+        }
+        break;
+    case SDL_MOUSEBUTTONUP:
+        if(window_state.event.button.button == SDL_BUTTON_LEFT)
+        {
+            memset(player_state.card_grab_bitmap, 0, sizeof(player_state.card_grab_bitmap));
         }
         break;
     }

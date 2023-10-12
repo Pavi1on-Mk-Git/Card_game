@@ -5,6 +5,7 @@
 
 void handle_bar();
 void handle_esc();
-void handle_draw_button(card_vec* cards);
+void handle_draw_button();
+void handle_card_grab();
 
 #endif

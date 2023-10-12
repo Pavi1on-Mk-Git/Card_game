@@ -4,9 +4,7 @@
 #include "viewports.h"
 #include "window_state.h"
 
-
 WindowState window_state = {0};
-PlayerState player_state = {0};
 
 int main(int argc, char* argv[])
 {
@@ -18,9 +16,11 @@ int main(int argc, char* argv[])
 
     setup_viewports();
 
+    init_player_state();
+
     game_loop(&window_state);
 
-    free_all_textures();
+    free_all_interactables();
     free_cards(&player_state.hand);
     SDL_DestroyRenderer(window_state.renderer);
     SDL_DestroyWindow(window_state.window);

@@ -29,12 +29,13 @@
         .w = BUTTON_WIDTH - 2 * BUTTON_BORDER, .h = BAR_HEIGHT - 2 * BUTTON_BORDER   \
     }
 
-#define GAME_VIEWPORT_COUNT 3
+#define GAME_VIEWPORT_COUNT 4
 extern SDL_FRect game_viewports[GAME_VIEWPORT_COUNT];
 
 #define GAME_VIEWPORT game_viewports[0]
 #define RIGHT_BAR_VIEWPORT game_viewports[1]
-#define DRAW_BUTTON game_viewports[2]
+#define DRAW_BUTTON_VIEWPORT game_viewports[2]
+#define HAND_VIEWPORT game_viewports[3]
 
 void setup_viewports();
 
