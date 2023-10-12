@@ -32,16 +32,16 @@ void draw_hand_viewport()
 
     SDL_RenderSetViewport(window_state.renderer, &RECT(HAND_VIEWPORT));
 
-    for(unsigned i = 0; i < player_state.hand.size; i++)
+    for(unsigned i = 0; i < player_state.hand.curr_size; i++)
     {
-        angle = rotation(i, player_state.hand.size);
+        angle = rotation(i, player_state.hand.curr_size);
 
-        player_state.rotation_data.angles[i] = angle;
+        player_state.hand.metadata.angles[i] = angle;
 
-        if(player_state.card_grab_bitmap[i] == SDL_FALSE)
+        if(player_state.hand.metadata.card_grab_bitmap[i] == SDL_FALSE)
             SDL_RenderCopyExF(
-                window_state.renderer, player_state.hand.data[i]->texture, &player_state.hand.data[i]->cutout_rect,
-                &player_state.rotation_data.dest_rect, angle, &player_state.rotation_data.rot_center, SDL_FLIP_NONE
+                window_state.renderer, player_state.hand.cards[i]->texture, &player_state.hand.cards[i]->cutout_rect,
+                &player_state.hand.metadata.dest_rect, angle, &player_state.hand.metadata.rot_center, SDL_FLIP_NONE
             );
     }
 }

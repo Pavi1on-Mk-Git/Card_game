@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
     game_loop(&window_state);
 
     free_all_interactables();
-    free_cards(&player_state.hand);
     SDL_DestroyRenderer(window_state.renderer);
     SDL_DestroyWindow(window_state.window);
     SDL_Quit();

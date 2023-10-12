@@ -119,8 +119,8 @@ void handle_draw_button()
 
             if(SDL_PointInFRect(&mouse, &DRAW_BUTTON_VIEWPORT))
             {
-                if(player_state.hand.size < MAX_HAND_SIZE)
-                    push_back(&player_state.hand, cards.data[rand() % cards.size]);
+                if(player_state.hand.curr_size < MAX_HAND_SIZE)
+                    player_state.hand.cards[player_state.hand.curr_size++] = cards.data[rand() % cards.size];
             }
         }
         break;
@@ -134,17 +134,17 @@ void handle_card_grab()
     case SDL_MOUSEBUTTONDOWN:
         if(window_state.event.button.button == SDL_BUTTON_LEFT)
         {
-            for(int i = player_state.hand.size - 1; i >= 0; i--)
+            for(int i = player_state.hand.curr_size - 1; i >= 0; i--)
             {
                 if(mouse_in_rotated_rect(
-                       &player_state.rotation_data.dest_rect,
+                       &player_state.hand.metadata.dest_rect,
                        &(SDL_FPoint
-                       ){.x = player_state.rotation_data.rot_center.x + player_state.rotation_data.dest_rect.x,
-                         .y = player_state.rotation_data.rot_center.y + player_state.rotation_data.dest_rect.y},
-                       player_state.rotation_data.angles[i]
+                       ){.x = player_state.hand.metadata.rot_center.x + player_state.hand.metadata.dest_rect.x,
+                         .y = player_state.hand.metadata.rot_center.y + player_state.hand.metadata.dest_rect.y},
+                       player_state.hand.metadata.angles[i]
                    ))
                 {
-                    player_state.card_grab_bitmap[i] = SDL_TRUE;
+                    player_state.hand.metadata.card_grab_bitmap[i] = SDL_TRUE;
                     break;
                 }
             }
@@ -153,7 +153,7 @@ void handle_card_grab()
     case SDL_MOUSEBUTTONUP:
         if(window_state.event.button.button == SDL_BUTTON_LEFT)
         {
-            memset(player_state.card_grab_bitmap, 0, sizeof(player_state.card_grab_bitmap));
+            memset(player_state.hand.metadata.card_grab_bitmap, 0, sizeof(player_state.hand.metadata.card_grab_bitmap));
         }
         break;
     }
