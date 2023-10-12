@@ -35,10 +35,9 @@ void free_cards(card_vec* head)
     for(unsigned i = 0; i < head->size; i++)
     {
         SDL_DestroyTexture(head->data[i]->texture);
-        for(unsigned i = 0; i < head->size; i++)
-            free(head->data[i]);
-        free(head->data);
+        free(head->data[i]);
     }
+    free(head->data);
 }
 
 ErrorCode check_duplicate(const card_vec* vec, const card_entry* new_card)
