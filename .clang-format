@@ -149,7 +149,6 @@ SpacesInLineCommentPrefix:
   Maximum: 1
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-SpaceBeforeSquareBrackets: false
 Standard: Latest
 TabWidth: 4
 UseTab: Never
