@@ -23,14 +23,14 @@ ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
         SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS
     );
 
-    if(window == NULL)
+    if(*window == NULL)
     {
         SDL_Log("Window creation failed: %s\n", SDL_GetError());
         return ERR_INIT;
     }
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
-    if(renderer == NULL)
+    if(*renderer == NULL)
     {
         SDL_Log("Renderer creation failed: %s\n", SDL_GetError());
         return ERR_INIT;
