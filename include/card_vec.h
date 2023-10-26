@@ -26,6 +26,6 @@ void push_back(card_vec* vec, card_entry* new_card);
 int compare_cards(void* context, const void* first, const void* second);
 void sort_vec(card_vec* vec);
 void free_cards(card_vec* vec);
-ErrorCode check_duplicate(const card_vec* vec, const card_entry* new_card);
+SDL_bool check_duplicate(const card_vec* vec, const card_entry* new_card);
 
 #endif

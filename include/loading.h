@@ -6,7 +6,7 @@
 
 #include <SDL2/SDL.h>
 
-ErrorCode load_texture(SDL_Texture** texture, const char* path);
-ErrorCode load_card_data(card_vec* head);
+SDL_Texture* load_texture(const char* path, ErrorCode* err);
+void load_card_data(card_vec* head, ErrorCode* err);
 
 #endif

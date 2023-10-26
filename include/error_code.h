@@ -12,10 +12,11 @@ typedef enum ErrorCode
     ERR_CARD_DUP,
     ERR_NULL,
     ERR_TEXTURE,
+    ERR_MEM,
 }
 
 ErrorCode;
 
-extern char error_msg[MAX_NAME_LEN + 1];
+extern char* error_msg;
 
 #endif

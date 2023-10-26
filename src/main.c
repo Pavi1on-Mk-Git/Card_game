@@ -11,14 +11,18 @@ int main(int argc, char* argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    if(initialize_SDL(&window_state.window, &window_state.renderer) != 0)
+    ErrorCode err = ERR_OK;
+
+    initialize_SDL(&window_state.window, &window_state.renderer, &err);
+
+    if(err != ERR_OK)
         return 1;
 
     setup_viewports();
 
     init_player_state();
 
-    game_loop(&window_state);
+    game_loop(&err);
 
     free_all_interactables();
     SDL_DestroyRenderer(window_state.renderer);

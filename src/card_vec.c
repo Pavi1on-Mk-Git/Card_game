@@ -40,14 +40,14 @@ void free_cards(card_vec* head)
     free(head->data);
 }
 
-ErrorCode check_duplicate(const card_vec* vec, const card_entry* new_card)
+SDL_bool check_duplicate(const card_vec* vec, const card_entry* new_card)
 {
     if(!vec || !new_card)
-        return ERR_NULL;
+        return SDL_TRUE;
     for(unsigned i = 0; i < vec->size; i++)
     {
         if(strncmp(vec->data[i]->name, new_card->name, MAX_NAME_LEN) == 0)
-            return ERR_CARD_DUP;
+            return SDL_TRUE;
     }
-    return ERR_OK;
+    return SDL_FALSE;
 }

@@ -24,7 +24,7 @@ extern interactable interactables[INTER_COUNT];
 
 extern card_vec cards;
 
-ErrorCode load_all_interactables();
+void load_all_interactables(ErrorCode* err);
 void free_all_interactables();
 
 #endif

@@ -8,6 +8,6 @@
 #include <stdio.h>
 
 
-ErrorCode parse_card_data(card_entry* card, FILE card_data[static 1]);
+void parse_card_data(card_entry* card, FILE* card_data, ErrorCode* err);
 
 #endif

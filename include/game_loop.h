@@ -5,8 +5,8 @@
 
 #include <SDL2/SDL.h>
 
-ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer);
+void initialize_SDL(SDL_Window** window, SDL_Renderer** renderer, ErrorCode* err);
 void delay();
-void game_loop();
+void game_loop(ErrorCode* err);
 
 #endif

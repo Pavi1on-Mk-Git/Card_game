@@ -10,12 +10,13 @@
 #include <math.h>
 #include <string.h>
 
-ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
+void initialize_SDL(SDL_Window** window, SDL_Renderer** renderer, ErrorCode* err)
 {
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         SDL_Log("SDL Initialization failed: %s\n", SDL_GetError());
-        return ERR_INIT;
+        *err = ERR_INIT;
+        return;
     }
 
     *window = SDL_CreateWindow(
@@ -26,19 +27,19 @@ ErrorCode initialize_SDL(SDL_Window** window, SDL_Renderer** renderer)
     if(*window == NULL)
     {
         SDL_Log("Window creation failed: %s\n", SDL_GetError());
-        return ERR_INIT;
+        *err = ERR_INIT;
+        return;
     }
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
     if(*renderer == NULL)
     {
         SDL_Log("Renderer creation failed: %s\n", SDL_GetError());
-        return ERR_INIT;
+        *err = ERR_INIT;
+        return;
     }
 
     SDL_RenderSetLogicalSize(*renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    return ERR_OK;
 }
 
 void delay()
@@ -49,9 +50,11 @@ void delay()
         SDL_Delay(FRAME_TIME - window_state.frame_time);
 }
 
-void game_loop()
+void game_loop(ErrorCode* err)
 {
-    if(load_all_interactables() != ERR_OK)
+    load_all_interactables(err);
+
+    if(*err != ERR_OK)
     {
         SDL_Log(error_msg);
         return;

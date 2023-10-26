@@ -7,31 +7,33 @@
 card_vec cards;
 interactable interactables[INTER_COUNT];
 
-ErrorCode load_all_interactables()
+void load_all_interactables(ErrorCode* err)
 {
-    ErrorCode card_err = load_card_data(&cards);
-    if(card_err != ERR_OK)
-    {
-        return card_err;
-    }
+    load_card_data(&cards, err);
+    if(*err != ERR_OK)
+        return;
 
-    if(load_texture(&BAR.texture, "assets/bar.bmp") != ERR_OK)
+    BAR.texture = load_texture("assets/bar.bmp", err);
+
+    if(*err != ERR_OK)
     {
-        strcpy(error_msg, "Couldn't load the bar texture");
-        return ERR_TEXTURE;
+        error_msg = "Couldn't load the bar texture";
+        *err = ERR_TEXTURE;
+        return;
     }
     BAR.draw = draw_bar;
     BAR.handle = handle_bar;
 
-    if(load_texture(&DRAW_BUTTON.texture, "assets/button.bmp") != ERR_OK)
+    DRAW_BUTTON.texture = load_texture("assets/button.bmp", err);
+
+    if(*err != ERR_OK)
     {
-        strcpy(error_msg, "Couldn't load the button texture");
-        return ERR_TEXTURE;
+        error_msg = "Couldn't load the button texture";
+        *err = ERR_TEXTURE;
+        return;
     }
     DRAW_BUTTON.draw = draw_draw_button;
     DRAW_BUTTON.handle = handle_draw_button;
-
-    return ERR_OK;
 }
 
 void free_all_interactables()
