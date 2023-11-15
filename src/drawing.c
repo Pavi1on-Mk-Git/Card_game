@@ -2,23 +2,48 @@
 
 #include "helpers.h"
 #include "player_state.h"
-#include "textures.h"
 #include "viewports.h"
+#include "window_state.h"
 
 #include <math.h>
 
-void draw_bar()
+void draw_all(const UiNode* root)
 {
-    SDL_RenderSetViewport(window_state.renderer, &RECT(BAR_VIEWPORT));
+    if(!root)
+        return;
 
-    SDL_RenderCopy(window_state.renderer, BAR.texture, NULL, NULL);
+    if(root->state.hidden)
+        return;
+
+    switch(root->draw_type)
+    {
+    case TEXTURE:
+        draw_texture(&RECT(root->viewport), root->texture);
+        break;
+    case COLOUR:
+        draw_colour(&RECT(root->viewport), root->colour);
+        break;
+    case OTHER:
+        root->draw(root);
+    case NONE:
+        break;
+    }
+
+    for(int i = 0; i < root->children_size; i++)
+        draw_all(&root->children[i]);
 }
 
-void draw_draw_button()
+void draw_texture(const SDL_Rect* viewport, SDL_Texture* texture)
 {
-    SDL_RenderSetViewport(window_state.renderer, &RECT(DRAW_BUTTON_VIEWPORT));
+    SDL_RenderSetViewport(window_state.renderer, viewport);
+    SDL_RenderCopy(window_state.renderer, texture, NULL, NULL);
+}
 
-    SDL_RenderCopy(window_state.renderer, DRAW_BUTTON.texture, NULL, NULL);
+void draw_colour(const SDL_Rect* viewport, SDL_Colour colour)
+{
+    SDL_RenderSetViewport(window_state.renderer, viewport);
+    SDL_SetRenderDrawColor(window_state.renderer, colour.r, colour.g, colour.b, colour.a);
+    SDL_RenderFillRect(window_state.renderer, NULL);
 }
 
 double rotation(double card_index, double hand_size)
@@ -26,11 +51,11 @@ double rotation(double card_index, double hand_size)
     return 4 * hand_size * ((card_index - (hand_size) / 2 + 0.5) / hand_size);
 }
 
-void draw_hand_viewport()
+void draw_hand(const UiNode* hand)
 {
     double angle;
 
-    SDL_RenderSetViewport(window_state.renderer, &RECT(HAND_VIEWPORT));
+    SDL_RenderSetViewport(window_state.renderer, &RECT(hand->viewport));
 
     for(unsigned i = 0; i < player_state.hand.curr_size; i++)
     {
@@ -44,22 +69,4 @@ void draw_hand_viewport()
                 &player_state.hand.metadata.dest_rect, angle, &player_state.hand.metadata.rot_center, SDL_FLIP_NONE
             );
     }
-}
-
-void draw_game_viewport()
-{
-    SDL_RenderSetViewport(window_state.renderer, &RECT(GAME_VIEWPORT));
-    SDL_SetRenderDrawColor(window_state.renderer, 0x78, 0x20, 0x1c, 0xff);
-    SDL_RenderFillRect(window_state.renderer, NULL); // Clear the game viewport
-
-    draw_hand_viewport();
-}
-
-void draw_right_bar_viewport()
-{
-    SDL_RenderSetViewport(window_state.renderer, &RECT(RIGHT_BAR_VIEWPORT));
-    SDL_SetRenderDrawColor(window_state.renderer, 0xc0, 0xc0, 0xc0, 0xff);
-    SDL_RenderFillRect(window_state.renderer, NULL); // Clear the right button viewport
-
-    DRAW_BUTTON.draw();
 }

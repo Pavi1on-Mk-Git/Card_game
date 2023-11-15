@@ -1,6 +1,8 @@
 #ifndef WINDOW_STATE_H
 #define WINDOW_STATE_H
 
+#include "ui_tree.h"
+
 #include <SDL2/SDL.h>
 
 typedef struct WindowState
@@ -11,6 +13,7 @@ typedef struct WindowState
     SDL_Point mouse_offset;
     SDL_Event event;
     Uint64 frame_start, frame_time;
+    UiNode* ui_tree;
 } WindowState;
 
 extern WindowState window_state;

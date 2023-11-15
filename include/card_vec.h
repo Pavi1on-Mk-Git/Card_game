@@ -22,6 +22,8 @@ typedef struct card_vec
     size_t size, capacity;
 } card_vec;
 
+extern card_vec cards;
+
 void push_back(card_vec* vec, card_entry* new_card);
 int compare_cards(void* context, const void* first, const void* second);
 void sort_vec(card_vec* vec);

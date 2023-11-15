@@ -4,7 +4,7 @@
 #include "event_handlers.h"
 #include "helpers.h"
 #include "loading.h"
-#include "textures.h"
+#include "ui_tree.h"
 #include "window_state.h"
 
 #include <math.h>
@@ -52,7 +52,7 @@ void delay()
 
 void game_loop(ErrorCode* err)
 {
-    load_all_interactables(err);
+    load_card_data(&cards, err);
 
     if(*err != ERR_OK)
     {
@@ -66,20 +66,11 @@ void game_loop(ErrorCode* err)
 
         while(SDL_PollEvent(&window_state.event))
         {
-            if(!window_state.is_fullscreen)
-                BAR.handle();
-
             handle_esc();
-            handle_draw_button();
-            handle_card_grab();
+            handle_all(window_state.ui_tree);
         }
 
-        if(!window_state.is_fullscreen)
-            BAR.draw();
-
-        draw_game_viewport();
-
-        draw_right_bar_viewport();
+        draw_all(window_state.ui_tree);
 
         SDL_RenderPresent(window_state.renderer);
 

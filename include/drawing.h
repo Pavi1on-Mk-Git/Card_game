@@ -2,15 +2,13 @@
 #define DRAWING_H
 
 #include "card_vec.h"
+#include "ui_tree.h"
 
 #include <SDL2/SDL.h>
 
-
-void draw_bar();
-void draw_draw_button();
-
-void draw_game_viewport();
-void draw_hand_viewport();
-void draw_right_bar_viewport();
+void draw_all(const UiNode* root);
+void draw_texture(const SDL_Rect* viewport, SDL_Texture* texture);
+void draw_colour(const SDL_Rect* viewport, SDL_Colour colour);
+void draw_hand(const UiNode* hand);
 
 #endif

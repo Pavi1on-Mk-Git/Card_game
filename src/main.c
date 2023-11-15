@@ -1,10 +1,12 @@
+#include "card_vec.h"
 #include "game_loop.h"
 #include "player_state.h"
-#include "textures.h"
 #include "viewports.h"
 #include "window_state.h"
 
+
 WindowState window_state = {0};
+card_vec cards = {0};
 
 int main(int argc, char* argv[])
 {
@@ -18,13 +20,21 @@ int main(int argc, char* argv[])
     if(err != ERR_OK)
         return 1;
 
+    window_state.ui_tree = ui_tree_init(&err);
+
+    if(err != ERR_OK)
+    {
+        SDL_Log(error_msg);
+    }
+
     setup_viewports();
 
     init_player_state();
 
     game_loop(&err);
 
-    free_all_interactables();
+    ui_tree_free(window_state.ui_tree);
+    free_cards(&cards);
     SDL_DestroyRenderer(window_state.renderer);
     SDL_DestroyWindow(window_state.window);
     SDL_Quit();
